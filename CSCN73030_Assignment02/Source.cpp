@@ -68,8 +68,10 @@ int main(void) {
 
 	// vector to store list of student data
 	vector<STUDENT_DATA> studentDataList;
+
 	// parse student data from the text file
 	parseStudentDataFromFile(STU_DATA_FILE, studentDataList);
+
 #ifdef _DEBUG	// print student data from vector - only for Debug Mode
 	printStudentDataFromVector(studentDataList);
 #endif // DEBUG
