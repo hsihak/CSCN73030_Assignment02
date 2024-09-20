@@ -13,15 +13,26 @@
 #include <string>
 #include <vector>
 
-#define STU_DATA_FILE "../StudentData.txt"
-#define DELIMINATOR ','
-
 using namespace std;
+
+#define PRE_RELEASE
+
+#ifdef PRE_RELEASE
+#define STU_DATA_FILE "../StudentData_Emails.txt"
+#else 
+#define STU_DATA_FILE "../StudentData.txt"
+#endif // PRE_RELEASE
+
+#define DELIMINATOR ','
 
 // a struct to hold student data
 typedef struct STUDENT_DATA {
 	string firstName;
 	string lastName;
+#ifdef PRE_RELEASE
+	string email;
+#endif // PRE_RELEASE
+
 }STUDENT_DATA;
 
 // A helper function to parse student data from file
@@ -45,6 +56,10 @@ bool parseStudentDataFromFile(string fileName, vector<STUDENT_DATA>& studentData
 		// parse first and last name that is separated by a comma (deliminator)
 		getline(iss, tempStudentData.firstName, DELIMINATOR);
 		getline(iss, tempStudentData.lastName, DELIMINATOR);
+#ifdef PRE_RELEASE
+		getline(iss, tempStudentData.email, DELIMINATOR);
+#endif // PRE_RELEASE
+
 		// add the parsed student data to the vector
 		studentDataList.push_back(tempStudentData);
 	}
@@ -59,12 +74,22 @@ bool parseStudentDataFromFile(string fileName, vector<STUDENT_DATA>& studentData
 void printStudentDataFromVector(vector<STUDENT_DATA> studentDataList) {
 
 	for (int i = 0; i < studentDataList.size(); i++) {
-		cout << studentDataList[i].lastName << ", " << studentDataList[i].firstName << endl;
+		cout << studentDataList[i].lastName << ", " << studentDataList[i].firstName;
+#ifdef PRE_RELEASE
+		cout << ", " << studentDataList[i].email << endl;
+#else
+		cout << endl;
+#endif // PRE_RELEASE
 	}
 }
 #endif // DEBUG
 
 int main(void) {
+#ifdef PRE_RELEASE
+	cout << "This application is running on pre-release source code" << endl;
+#else
+	cout << "This application is running on standard source code" << endl;
+#endif // PRE_RELEASE
 
 	// vector to store list of student data
 	vector<STUDENT_DATA> studentDataList;
@@ -75,5 +100,5 @@ int main(void) {
 #ifdef _DEBUG	// print student data from vector - only for Debug Mode
 	printStudentDataFromVector(studentDataList);
 #endif // DEBUG
-	
+
 }
